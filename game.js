@@ -1,7 +1,7 @@
 let game;
 
 let gameOptions = {
-  gravity: 1,
+  gravity: 10,
   maxItemsPerLevel: 30,
   maxIterations: 10,
   minItemsDistance: 160
@@ -20,7 +20,7 @@ window.onload = function() {
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
       parent: "thegame",
-      width: 750,
+      width: 1500,
       height: 1334
     },
     
