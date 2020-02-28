@@ -1,15 +1,17 @@
 let game;
 
 let gameOptions = {
-  gravity: 10,
+  gravity: .8,
   maxItemsPerLevel: 30,
   maxIterations: 10,
-  minItemsDistance: 160
+  minItemsDistance: 150,
 }
 
 const HERO = 0;
 const COIN = 1;
 const SKULL = 2;
+var score = 0;
+var scoreText;
 
 window.onload = function() {
   let gameConfig = {
@@ -48,13 +50,16 @@ class playGame extends Phaser.Scene{
   }
   
   preload() {
-    this.load.spritesheet("items", "Art/items.png", {
+    //this.stage.backgroundColor = "#ffffff";
+    this.load.spritesheet("items", "Art/items1.png", {
       frameWidth: 128,
       frameHeight: 128
     });
   }
   
   create() {
+    scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    this.cameras.main.setBackgroundColor('rgba(255,255,255,1)');
     this.canSummonHero = true;
     this.matter.world.update30Hz();
     this.matter.world.setBounds(0, -400, game.config.width, game.config.height + 800);
@@ -69,14 +74,20 @@ class playGame extends Phaser.Scene{
         case COIN:
           b1.gameObject.visible = false;
           this.matter.world.remove(b1);
+          score += 10;
+          scoreText.setText('Score: ' + score);
           break;
           
         case SKULL:
           if (b1.gameObject.y > b2.gameObject.y) {
             b1.gameObject.visible = false;
             this.matter.world.remove(b1);
+            score += 10;
+            scoreText.setText('Score: ' + score);
           } else {
-            this.cameras.main.flash(50, 255, 0, 0);
+            this.cameras.main.shake(75, 500, 0, 0);
+            score -= 50;
+            scoreText.setText('Score: ' + score);
           }
           break;
           
@@ -85,7 +96,7 @@ class playGame extends Phaser.Scene{
             this.scene.start("PlayGame");
           } else {
             if (b2.gameObject.y > 0) {
-              this.cameras.main.flash(50, 255, 0, 0);
+              this.cameras.main.flash(30, 252, 248, 3);
             }
           }
           
